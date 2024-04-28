@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        button {
+            width: 50px;
+            height: 50px;
+            margin: 5px,;
+        }
+        #operator {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            text-align: center;
+            display: none;
+        }
+        #result {
+            width: 210px;
+            height: 40px;
+            margin: 5px;
+            padding: 2px;
+            text-align: right;
+        }
+        .main{
+            width: 240px;
+            height: 270px;
+            margin: 20px;
+            padding: 10px;
+            text-align: center;
+            border: 3px solid rgb(164,164,151);
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div>
+            <input readonly id='operator'/>
+            <input readonly type="number" id='result'/>
+        </div>
+        <div>
+            <button id='n7'>7</button>
+            <button id='n8'>8</button>
+            <button id='n9'>9</button>
+            <button id='op_plus'>+</button>
+        </div>
+        <div>
+            <button id='n4'>4</button>
+            <button id='n5'>5</button>
+            <button id='n6'>6</button>
+            <button id='op_sub'>-</button>
+        </div>
+        <div>
+            <button id='n1'>1</button>
+            <button id='n2'>2</button>
+            <button id='n3'>3</button>
+            <button id='op_mul'>*</button>
+        </div>
+        <div>
+            <button id='op_clr'>Clear</button>
+            <button id='n0'>0</button>
+            <button id='op_calc'>=</button>
+            <button id='op_div'>/</button>
+        </div> 
+    </div>
+
+    <script>
+
+        let numFirst = '';
+        let numSecond = '';
+        let op_input = null;
+        const cp_input_num = document.querySelector('#result');
+        const cp_input_op = document.querySelector('#operator');
+
+        const numFunc = (n) => () => {
+            console.log('clicked :'+n);
+            if (op_input === null) {
+                numFirst = numFirst + n;
+                cp_input_num.value = numFirst;
+            } else {
+                numSecond = numSecond + n;
+                cp_input_num.value = numSecond;
+            }
+        };
+
+        const opFunc = (op) => () => {
+            console.log('clicked :'+op);
+            switch (op) {
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                    op_input = op;
+                    cp_input_op.value = op_input;
+                    break
+                case '=':
+                    switch (op_input) {
+                        case '+':
+                            cp_input_num.value = parseInt(numFirst) + parseInt(numSecond);
+                            break;
+                        case '-':
+                            cp_input_num.value = parseInt(numFirst) - parseInt(numSecond);
+                            break;
+                        case '*':
+                            cp_input_num.value = parseInt(numFirst) * parseInt(numSecond);
+                            break;
+                        case '/':
+                            cp_input_num.value = parseInt(numFirst) / parseInt(numSecond);
+                            break;
+                    }
+                    numFirst = cp_input_num.value
+                    numSecond = '';
+                    break;
+                case 'clear':
+                    numFirst = '';
+                    numSecond = '';
+                    op_input = null;
+                    cp_input_num.value = '';
+                    cp_input_op.value = '';
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        document.querySelector('#n0').addEventListener('click', numFunc('0'));
+        document.querySelector('#n1').addEventListener('click', numFunc('1'));
+        document.querySelector('#n2').addEventListener('click', numFunc('2'));
+        document.querySelector('#n3').addEventListener('click', numFunc('3'));
+        document.querySelector('#n4').addEventListener('click', numFunc('4'));
+        document.querySelector('#n5').addEventListener('click', numFunc('5'));
+        document.querySelector('#n6').addEventListener('click', numFunc('6'));
+        document.querySelector('#n7').addEventListener('click', numFunc('7'));
+        document.querySelector('#n8').addEventListener('click', numFunc('8'));
+        document.querySelector('#n9').addEventListener('click', numFunc('9'));
+        
+        document.querySelector('#op_plus').addEventListener('click', opFunc('+'));
+        document.querySelector('#op_sub').addEventListener('click', opFunc('-'));
+        document.querySelector('#op_mul').addEventListener('click', opFunc('*'));
+        document.querySelector('#op_div').addEventListener('click', opFunc('/'));
+        document.querySelector('#op_calc').addEventListener('click', opFunc('='));
+        document.querySelector('#op_clr').addEventListener('click', opFunc('clear'));
+
+    </script>
+</body>
+</html>
